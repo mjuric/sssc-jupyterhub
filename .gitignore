@@ -1,0 +1,5 @@
+# Never store secrets
+env
+# Usual stuff
+*~
+DEADJOE
