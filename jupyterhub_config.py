@@ -14,6 +14,8 @@ c.GitHubOAuthenticator.github_organization_whitelist = ['dirac-institute']
 
 c.Spawner.cmd = '/srv/single-user.sh'
 
+c.JupyterHub.port = 9876
+
 #c.Authenticator.whitelist = whitelist = set()
 c.JupyterHub.admin_users = admin = set()
 
