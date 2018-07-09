@@ -18,6 +18,8 @@ MAINTAINER Project Jupyter <ipython-dev@scipy.org>
 RUN conda install jupyter -y
 RUN rm -rf /opt/conda/share/jupyter/kernels
 RUN ln -s /usr/local/share/jupyter/kernels /opt/conda/share/jupyter/kernels
+RUN mkdir -p /usr/local/share/jupyter
+RUN ln -s /epyc/projects/sssc/sssc-jupyterhub/kernels /usr/local/share/jupyter/kernels
 
 # Install oauthenticator from git
 RUN python3 -m pip install oauthenticator
@@ -37,6 +39,15 @@ RUN chmod +x /srv/single-user.sh
 
 ADD start.sh /srv/oauthenticator/start.sh
 RUN chmod 700 /srv/oauthenticator/start.sh
+
+# Install missing packages
+RUN apt-get update
+RUN apt-get install -y libgl1-mesa-glx libgomp1
+
+# Add link to sssc to home directories (so notebooks can escape)
+RUN ln -s /epyc/projects/sssc /etc/skel/sssc
+
+RUN groupadd sssc
 
 CMD ["/srv/oauthenticator/start.sh"]
 

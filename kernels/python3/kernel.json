@@ -1,0 +1,8 @@
+{
+ "argv": [
+  "/epyc/projects/sssc/sssc-jupyterhub/ipykernel-with-lsst-stack.sh",
+  "{connection_file}"
+ ],
+ "display_name": "Python 3 (LSST Apps, Sims, for SSSC)",
+ "language": "python"
+}

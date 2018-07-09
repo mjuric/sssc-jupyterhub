@@ -13,6 +13,7 @@ c.GitHubOAuthenticator.scope = ['read:org']
 c.GitHubOAuthenticator.github_organization_whitelist = ['dirac-institute']
 
 c.Spawner.cmd = '/srv/single-user.sh'
+c.LocalAuthenticator.add_user_cmd = ["useradd", "-m", "-G", "sssc"]
 
 c.JupyterHub.port = 9876
 
