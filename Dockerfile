@@ -11,13 +11,12 @@
 
 FROM jupyterhub/jupyterhub
 
-MAINTAINER Project Jupyter <ipython-dev@scipy.org>
+MAINTAINER Mario Juric <mjuric@astro.washington.edu>
 
-# Install Jupyter into this container, but don't provide a default kernel
-# That will be mounted from the outside
+# Install Jupyter into this container
 RUN conda install jupyter -y
 
-# Install missing packages
+# Install missing ubuntu packages (needed by matplotlib and healpy)
 RUN apt-get update
 RUN apt-get install -y libgl1-mesa-glx libgomp1
 
@@ -29,10 +28,9 @@ RUN mkdir /srv/oauthenticator
 WORKDIR /srv/oauthenticator
 ENV OAUTHENTICATOR_DIR /srv/oauthenticator
 ADD jupyterhub_config.py jupyterhub_config.py
-ADD ssl /srv/oauthenticator/ssl
 RUN chmod 700 /srv/oauthenticator
 
-# Jupyter single-user server startup script
+# Inject our own Jupyter singleuser-server startup script
 # It makes sure we switch to the /epyc/opt/anaconda environment
 ADD single-user.sh /srv
 RUN chmod +x /srv/single-user.sh
@@ -48,7 +46,7 @@ RUN ln -s /epyc/projects/sssc/sssc-jupyterhub/kernels /usr/local/share/jupyter/k
 RUN ln -s /epyc/projects/sssc /etc/skel/sssc
 RUN groupadd sssc
 
-# Startup script
+# Insert our startup script (re-creates users, as needed)
 ADD start.sh /srv/oauthenticator/start.sh
 RUN chmod 700 /srv/oauthenticator/start.sh
 CMD ["/srv/oauthenticator/start.sh"]
