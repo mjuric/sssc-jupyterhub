@@ -18,4 +18,5 @@ echo "==== ================ ===="
 # Delegate the notebook server launch to the jupyterhub-singleuser script.
 # this is how most sudospawner-singleuser scripts should end.
 #exec "$(dirname "$0")/jupyterhub-singleuser" $@
+umask 0002
 exec /opt/conda/bin/jupyterhub-singleuser "$@"
