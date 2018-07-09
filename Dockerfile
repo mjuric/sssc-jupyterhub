@@ -16,10 +16,10 @@ MAINTAINER Project Jupyter <ipython-dev@scipy.org>
 # Install Jupyter into this container, but don't provide a default kernel
 # That will be mounted from the outside
 RUN conda install jupyter -y
-RUN rm -rf /opt/conda/share/jupyter/kernels
-RUN ln -s /usr/local/share/jupyter/kernels /opt/conda/share/jupyter/kernels
-RUN mkdir -p /usr/local/share/jupyter
-RUN ln -s /epyc/projects/sssc/sssc-jupyterhub/kernels /usr/local/share/jupyter/kernels
+
+# Install missing packages
+RUN apt-get update
+RUN apt-get install -y libgl1-mesa-glx libgomp1
 
 # Install oauthenticator from git
 RUN python3 -m pip install oauthenticator
@@ -29,26 +29,27 @@ RUN mkdir /srv/oauthenticator
 WORKDIR /srv/oauthenticator
 ENV OAUTHENTICATOR_DIR /srv/oauthenticator
 ADD jupyterhub_config.py jupyterhub_config.py
-ADD addusers.sh /srv/oauthenticator/addusers.sh
 ADD userlist /srv/oauthenticator/userlist
 ADD ssl /srv/oauthenticator/ssl
 RUN chmod 700 /srv/oauthenticator
 
+# Jupyter single-user server startup script
+# It makes sure we switch to the /epyc/opt/anaconda environment
 ADD single-user.sh /srv
 RUN chmod +x /srv/single-user.sh
 
-ADD start.sh /srv/oauthenticator/start.sh
-RUN chmod 700 /srv/oauthenticator/start.sh
+# Set up default kernels
+RUN rm -rf /opt/conda/share/jupyter/kernels
+RUN ln -s /usr/local/share/jupyter/kernels /opt/conda/share/jupyter/kernels
+RUN mkdir -p /usr/local/share/jupyter
+RUN ln -s /epyc/projects/sssc/sssc-jupyterhub/kernels /usr/local/share/jupyter/kernels
 
-# Install missing packages
-RUN apt-get update
-RUN apt-get install -y libgl1-mesa-glx libgomp1
-
-# Add link to sssc to home directories (so notebooks can escape)
+# Add link to sssc to home directories (so notebooks can escape into the
+# common dir)
 RUN ln -s /epyc/projects/sssc /etc/skel/sssc
-
 RUN groupadd sssc
 
+# Startup script
+ADD start.sh /srv/oauthenticator/start.sh
+RUN chmod 700 /srv/oauthenticator/start.sh
 CMD ["/srv/oauthenticator/start.sh"]
-
-#RUN ["sh", "/srv/oauthenticator/addusers.sh"]

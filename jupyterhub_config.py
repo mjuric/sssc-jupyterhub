@@ -16,6 +16,7 @@ c.Spawner.cmd = '/srv/single-user.sh'
 c.LocalAuthenticator.add_user_cmd = ["useradd", "-m", "-G", "sssc"]
 
 c.JupyterHub.port = 9876
+c.JupyterHub.base_url = '/sssc'
 
 #c.Authenticator.whitelist = whitelist = set()
 c.JupyterHub.admin_users = admin = set()
