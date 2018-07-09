@@ -22,14 +22,14 @@ c.JupyterHub.base_url = '/sssc'
 #c.JupyterHub.admin_users = admin = set()
 c.Authenticator.admin_users = { 'mjuric' }
 
-import os
-import sys
+##import os
+##import sys
 
-join = os.path.join
-
-here = os.path.dirname(__file__)
-root = os.environ.get('OAUTHENTICATOR_DIR', here)
-sys.path.insert(0, root)
+##join = os.path.join
+##
+##here = os.path.dirname(__file__)
+##root = os.environ.get('OAUTHENTICATOR_DIR', here)
+##sys.path.insert(0, root)
 
 #with open(join(root, 'userlist')) as f:
 #    for line in f:
@@ -41,13 +41,15 @@ sys.path.insert(0, root)
 #        if len(parts) > 1 and parts[1] == 'admin':
 #            admin.add(name)
 
+import os
 c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 
 # ssl config
-ssl = join(root, 'ssl')
-keyfile = join(ssl, 'ssl.key')
-certfile = join(ssl, 'ssl.cert')
-if os.path.exists(keyfile):
-    c.JupyterHub.ssl_key = keyfile
-if os.path.exists(certfile):
-    c.JupyterHub.ssl_cert = certfile
+#from os.path import join
+#ssl = join(root, 'ssl')
+#keyfile = join(ssl, 'ssl.key')
+#certfile = join(ssl, 'ssl.cert')
+#if os.path.exists(keyfile):
+#    c.JupyterHub.ssl_key = keyfile
+#if os.path.exists(certfile):
+#    c.JupyterHub.ssl_cert = certfile
