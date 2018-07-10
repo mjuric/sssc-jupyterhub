@@ -14,7 +14,7 @@ c.JupyterHub.authenticator_class = LocalGitHubOAuthenticator
 import os
 c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 c.GitHubOAuthenticator.scope = ['read:org']
-c.GitHubOAuthenticator.github_organization_whitelist = ['lsst-sssc', 'dirac-institute']
+c.GitHubOAuthenticator.github_organization_whitelist = ['lsst-sssc', 'lsst', 'dirac-institute']
 
 ##### User management config
 c.Authenticator.admin_users = { 'mjuric' }
