@@ -13,12 +13,31 @@ FROM jupyterhub/jupyterhub
 
 MAINTAINER Mario Juric <mjuric@astro.washington.edu>
 
+#
+# Container fixups
+#
+
+# Do not exclude man pages & other documentation
+# courtesy of https://github.com/tianon/docker-brew-ubuntu-core/issues/122#issuecomment-380529430
+RUN rm /etc/dpkg/dpkg.cfg.d/excludes
+# Reinstall all currently installed packages in order to get the man pages back
+RUN apt-get update && \
+    dpkg -l | grep ^ii | cut -d' ' -f3 | xargs apt-get install -y --reinstall && \
+    rm -r /var/lib/apt/lists/*
+
 # Install Jupyter into this container
 RUN conda install jupyter -y
 
-# Install missing ubuntu packages (needed by matplotlib and healpy)
+# Install missing ubuntu packages (needed by matplotlib, healpy, and oorb)
 RUN apt-get update
-RUN apt-get install -y libgl1-mesa-glx libgomp1
+RUN apt-get install -y libgl1-mesa-glx libgomp1 libgfortran3
+
+# Useful utilities
+RUN apt-get install -y man manpages-dev
+RUN apt-get install -y joe vim emacs
+
+
+
 
 # Install oauthenticator from git
 RUN python3 -m pip install oauthenticator
@@ -45,6 +64,10 @@ RUN ln -s /epyc/projects/sssc/sssc-jupyterhub/kernels /usr/local/share/jupyter/k
 # common dir)
 RUN ln -s /epyc/projects/sssc /etc/skel/sssc
 RUN groupadd sssc
+
+# Have bash source the LSST environment in an interactive shell
+ADD bashrc-addition.sh bashrc-addition.sh
+RUN cat bashrc-addition.sh >> /etc/bash.bashrc && rm bashrc-addition.sh
 
 # Insert our startup script (re-creates users, as needed)
 ADD start.sh /srv/oauthenticator/start.sh

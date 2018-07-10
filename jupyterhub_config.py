@@ -18,6 +18,7 @@ c.GitHubOAuthenticator.github_organization_whitelist = ['lsst-sssc', 'dirac-inst
 
 ##### User management config
 c.Authenticator.admin_users = { 'mjuric' }
+c.JupyterHub.admin_access = True
 c.Spawner.cmd = '/srv/single-user.sh'
 c.LocalAuthenticator.add_user_cmd = ["useradd", "-m", "-G", "sssc", "-s", "/bin/bash"]
 c.LocalGitHubOAuthenticator.create_system_users = True
