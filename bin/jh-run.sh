@@ -7,6 +7,8 @@ docker \
 	run --rm -it -p 9876:9876 \
 	--cpus=16 \
 	--memory=128g \
+	--name=sssc-jupyterhub \
+	--hostname=sssc-jupyterhub \
 	--env-file=/epyc/projects/sssc/env \
 	-v /epyc/opt/anaconda:/epyc/opt/anaconda \
 	-v /opt/rh:/opt/rh \

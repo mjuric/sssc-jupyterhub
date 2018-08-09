@@ -20,6 +20,6 @@ setup -t sims lsst_sims
 #
 # Overrides from source
 #
-setup -k -r /epyc/projects/sssc/sources/oorb
-setup -k -r /epyc/projects/sssc/sources/sims_movingObjects
+setup -k -r /epyc/projects/sssc/sources/oorb_old
+setup -k -r /epyc/projects/sssc/sources/sims_movingObjects_old
 setup -k -r /epyc/projects/sssc/sources/sims_maf
